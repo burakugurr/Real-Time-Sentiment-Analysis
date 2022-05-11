@@ -3,7 +3,7 @@ from kafka import KafkaConsumer
 # To consume latest messages and auto-commit offsets
 consumer = KafkaConsumer('system_status',
                          group_id='my-group',
-                         api_version=(0,11,5),
+                         api_version=(0,11,5),d
                          bootstrap_servers=['localhost:9092'])
 for message in consumer:
     # message value and key are raw bytes -- decode if necessary!
