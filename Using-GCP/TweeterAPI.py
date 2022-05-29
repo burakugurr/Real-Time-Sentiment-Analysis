@@ -4,9 +4,17 @@ from tweepy import OAuthHandler
 from textblob import TextBlob
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
-nltk.downloader.download('vader_lexicon')
 
-#https://www.syntio.net/en/labs-musings/streaming-data-from-twitter-to-gcp
+
+nltk.downloader.download('vader_lexicon')
+import configparser
+
+config = configparser.ConfigParser()
+
+config.read('config.ini')
+
+
+
 class TwitterClient(object):
 	'''
 	Generic Twitter Class for sentiment analysis.
@@ -16,10 +24,10 @@ class TwitterClient(object):
 		Class constructor or initialization method.
 		'''
 		# keys and tokens from the Twitter Dev Console
-		consumer_key = 'BfE01vmJb8SalHhd676ln6D8H'
-		consumer_secret = '4Vji5nqLwHMaf0Pbznz4XXQY236CRIioA9txsYs01jUQvncBuI'
-		access_token = '2664142236-LDD4b2VWqz02S3UVxiPeNXR9eZNhbsIFofWyQ5g'
-		access_token_secret = 'IUaRmRLLLUsomUusfr7B5zx3hcNms38A7HDIBTwMujysZ'
+		consumer_key = config['twitter']['consumer_key']
+		consumer_secret = config['twitter']['consumer_secret']
+		access_token = config['twitter']['access_token']
+		access_token_secret = config['twitter']['access_token_secret']
 
 		# attempt authentication
 		try:

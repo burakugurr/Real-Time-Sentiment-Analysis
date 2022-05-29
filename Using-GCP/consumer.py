@@ -1,26 +1,49 @@
 import os
+from gevent import config
 from google.cloud import pubsub_v1
 from concurrent.futures import TimeoutError
+import MongoModule
 
-credentials_path = '.gcp\qwiklabs-gcp-04-9595fe27b103-f5301c3cf0bc.json'
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials_path
+import logging
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S',
+                    handlers=[logging.FileHandler("..\logs\consumer.log",
+                                                  encoding='utf-8')])
 
 
-timeout = 5.0                                                                       
+# connect to mongoDB 
+mongo = MongoModule.CONNECT_MONGO()
+
+import configparser
+config = configparser.ConfigParser()
+
+config.read('..\config.ini')
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = config['googlecloud']['credentials_path']
+
+
+timeout = config.getint('gevent', 'timeout')                                                             
 
 subscriber = pubsub_v1.SubscriberClient()
-subscription_path = 'projects/qwiklabs-gcp-01-d2aa5634019d/subscriptions/test1'
+subscription_path = config['googlecloud']['subscription_path']
 
 
 def callback(message):
-    print(f'Received message: {message}')
-    print(f'data: {message.data}')
-
     if message.attributes:
-        print("Attributes:")
+        logging.info('Received message: {}'.format(message.data))
+
         for key in message.attributes:
             value = message.attributes.get(key)
-            print(f"{key}: {value}")
+
+            mongo.insert_one(
+                {'text': value,
+                'search_topic': message.attributes.get('search_topic'),
+                'sentiment': message.attributes.get('sentiment'), 
+                'time': message.attributes.get('time')
+                })
+            
 
     message.ack()           
 
@@ -29,10 +52,13 @@ streaming_pull_future = subscriber.subscribe(subscription_path, callback=callbac
 print(f'Listening for messages on {subscription_path}')
 
 
-with subscriber:                                                # wrap subscriber in a 'with' block to automatically call close() when done
+with subscriber:                                                
     try:
         # streaming_pull_future.result(timeout=timeout)
-        streaming_pull_future.result()                          # going without a timeout will wait & block indefinitely
+        streaming_pull_future.result()
+
     except TimeoutError:
-        streaming_pull_future.cancel()                          # trigger the shutdown
-        streaming_pull_future.result()                          # block until the shutdown is complete
+        logging.warning('Listening for messages timed out after {} seconds'.format(timeout))
+        streaming_pull_future.cancel()                          
+        streaming_pull_future.result()                         
+

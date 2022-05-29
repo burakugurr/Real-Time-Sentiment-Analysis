@@ -1,5 +1,5 @@
-.gcp
+gcp
 .vscode
 __pycache__
 test.ipynb
-TweeterAPI.py
+config.ini
