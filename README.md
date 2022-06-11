@@ -9,6 +9,7 @@ Example [chart](https://charts.mongodb.com/charts-project-0-dfwtt/public/dashboa
 ## Project Structure
 
 ![Project Structure](img/flowchart.png)
+
 ## Prerequisites
 1. Create [GCP](https://cloud.google.com) account.
 2. Create [MongoDB](https://www.mongodb.com/) Cluster. 
@@ -72,6 +73,8 @@ docker run -p 8501:8501 realtime_sentiment:latest
 
 ```
 
+## Dashboard
+![Dash](img/app.png)
 
 
 
