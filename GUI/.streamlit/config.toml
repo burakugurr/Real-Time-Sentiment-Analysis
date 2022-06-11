@@ -1,0 +1,14 @@
+[theme]
+
+primaryColor="#e64304"
+
+backgroundColor="#FFFFFF"
+
+secondaryBackgroundColor="#F5F5F5"
+
+textColor="#000000"
+
+font="monospace"
+
+[deprecation]
+showPyplotGlobalUse = false

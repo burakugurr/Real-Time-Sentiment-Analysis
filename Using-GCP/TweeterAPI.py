@@ -20,9 +20,8 @@ class TwitterClient(object):
 	Generic Twitter Class for sentiment analysis.
 	'''
 	def __init__(self):
-		'''
-		Class constructor or initialization method.
-		'''
+		"""setup twitter API
+		"""
 		# keys and tokens from the Twitter Dev Console
 		consumer_key = config['twitter']['consumer_key']
 		consumer_secret = config['twitter']['consumer_secret']
@@ -41,17 +40,25 @@ class TwitterClient(object):
 			print("Error: Authentication Failed")
 
 	def clean_tweet(self, tweet):
-		'''
-		Utility function to clean tweet text by removing links, special characters
-		using simple regex statements.
-		'''
+		"""Clean tweet text by removing links, special characters, etc.
+
+		Args:
+			tweet (string): Tweet to clean.
+
+		Returns:
+			string: Cleaned tweet.
+		"""
 		return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(^\w+:\/\/\S+)", " ", tweet).split())
 
 	def get_tweet_sentiment(self, tweet):
-		'''
-		Utility function to classify sentiment of passed tweet
-		using textblob's sentiment method
-		'''
+		"""sentiment analysis of tweet using Vader algorithm V1.
+
+		Args:
+			teweet (string): Tweet to get sentiment of.
+
+		Returns:
+			string: Sentiment of tweet.
+		"""	
 		# create TextBlob object of passed tweet text
 		analysis = TextBlob(self.clean_tweet(tweet))
 		# set sentiment
@@ -63,7 +70,14 @@ class TwitterClient(object):
 			return 'negative'
 
 	def sentimentV2(self,teweet):
+		""" Get sentiment of tweet using Vader algorithm.
 
+		Args:
+			teweet (string): Tweet to get sentiment of.
+
+		Returns:
+			string: Sentiment of tweet.
+		"""		
 		analysis = TextBlob(self.clean_tweet(teweet))
 		score = SentimentIntensityAnalyzer().polarity_scores(teweet)
 
@@ -77,9 +91,15 @@ class TwitterClient(object):
 
 
 	def get_tweets(self, query, count = 10):
-		'''
-		Main function to fetch tweets and parse them.
-		'''
+		""" Get tweets from Twitter
+
+		Args:
+			query (string): Search query to run against Twitter API.
+			count (int, optional): Return tweet count. Defaults to 10.
+
+		Returns:
+			list: List of tweets.
+		"""		
 		# empty list to store parsed tweets
 		tweets = []
 

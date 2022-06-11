@@ -1,0 +1,9 @@
+streamlit
+pandas
+pymongo
+configparser
+google-cloud-pubsub
+tweepy
+nltk 
+numpy
+textblob

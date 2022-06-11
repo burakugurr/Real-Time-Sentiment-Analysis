@@ -3,3 +3,4 @@ gcp
 __pycache__
 test.ipynb
 config.ini
+Analysis.py

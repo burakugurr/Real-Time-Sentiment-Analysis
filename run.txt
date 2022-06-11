@@ -18,3 +18,7 @@ docker run \
   --net=host \
   --rm confluentinc/cp-kafka:3.1.1 \
   kafka-topics --create --topic foo --partitions 1 --replication-factor 1 --if-not-exists --zookeeper localhost:32181
+
+
+  # https://medium.com/@sarathjiguru/building-data-pipelines-with-kafka-735ea0b739b4
+  # https://medium.com/databand-ai/what-is-good-data-quality-for-data-engineers-5723ddb95034
