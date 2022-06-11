@@ -1,6 +1,6 @@
 # Real-Time Sentiment Analysis for Tweets
 
-In this application we will do real-time emotion analysis using GCP. 
+In this application we will do real-time sentiment analysis using GCP. 
 
 First, we will record the tweets shared on Twitter on MongoDB. In doing so, we will also have performed an sentiment analysis of the tweets. Then we will develop a dashboard that visualizes the sentiment states of the tweets we have recorded.
 
